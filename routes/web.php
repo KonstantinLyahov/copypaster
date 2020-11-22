@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['verify' => true]);
 
 Route::get('/', [CopypastaController::class, 'getIndexPage'])->name('index');
-
 Route::get('/home',  [CopypastaController::class, 'getHomePage'])->middleware(['auth', 'verified'])->name('home');
-
 Route::get('/create', [CopypastaController::class, 'getCreatePage'])->name('create');
+Route::get('/paste/{code}', [CopypastaController::class, 'getPaste'])->name('get.paste');
+
+Route::post('/create', [CopypastaController::class, 'postCreate'])->name('post.create');

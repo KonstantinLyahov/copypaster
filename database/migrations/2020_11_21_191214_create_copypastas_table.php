@@ -16,7 +16,7 @@ class CreateCopypastasTable extends Migration
         Schema::create('copypastas', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->nullable();
-            $table->text('text');
+            $table->text('body');
             $table->string('title', 100);
             $table->enum('exposure', ['public', 'unlisted', 'private']);
             $table->string('password')->nullable();

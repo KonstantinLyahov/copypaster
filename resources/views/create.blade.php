@@ -3,7 +3,8 @@
 @section('content')
 <div class="container">
 	<h3>Create paste</h3>
-	<form action="" method="post">
+	<form action="{{ route('post.create') }}" method="post">
+		@csrf
 		<div class="form-group">
 			<label for="create-title">Title</label>
 			<input type="text" class="form-control" id="create-title" name="title">
@@ -15,7 +16,7 @@
 		<div class="form-group">
 			<label for="create-exposure">Exposure</label>
 			<select name="exposure" id="create-exposure" class="form-control" name="exposure">
-				<option value="public" selected>Public</option>
+				<option value="public">Public</option>
 				<option value="unlisted">Unlisted</option>
 				<option value="private" @guest disabled @endguest>Private</option>
 			</select>
@@ -30,6 +31,9 @@
 				</div>
 				<input type="text" name="password" class="form-control" id="create-password-input" disabled>
 			</div>
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn btn-dark btn-lg">Create</button>
 		</div>
 	</form>
 </div>
