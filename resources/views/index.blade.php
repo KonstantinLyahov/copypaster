@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-	index
+	<div class="container">
+		@include('partials/pastelist')
+	</div>
 @endsection

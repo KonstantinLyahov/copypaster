@@ -16,11 +16,17 @@ class CopypastaController extends Controller
     }
     public function getIndexPage()
     {
-        return view('index');
+        $pastes = Copypasta::where('exposure', 'public')->orderBy('created_at')->get();
+        return view('index', ['pastes' => $pastes]);
     }
     public function getHomePage()
     {
         return view('home');
+    }
+    public function getUserPastes()
+    {
+        $pastes = Copypasta::where('user_id', Auth::user()->id)->orderBy('created_at')->get();
+        return view('index', ['pastes' => $pastes]);
     }
     public function postCreate(Request $request)
     {
@@ -34,9 +40,7 @@ class CopypastaController extends Controller
             if ($paste->exposure == 'private') {
                 $paste->exposure = 'unlisted';
             }
-            if ($paste->password) {
-                $paste->password = null;
-            }
+            $paste->password = null;
         }
         $paste->save();
         $urlcode = new Urlcode();
@@ -49,10 +53,24 @@ class CopypastaController extends Controller
         $urlcode->save();
         return redirect()->route('get.paste', ['code' => $urlcode->code]);
     }
-    public function getPaste($code)
+    public function getPaste($code, Request $request)
     {
         $code = Urlcode::where('code', $code)->first();
         $paste = $code->copypasta;
+        if ($paste->exposure == 'private' && $paste->user != Auth::user()) {
+            if (!$request->password || $request->password == '') {
+                return view('pastepassword', ['code' => $code->code]);
+            }
+            if (Hash::check(Hash::make($request->password), $paste->password)) {
+                return view('pastepassword', ['incorrect_password_error' => true, 'code' => $code->code]);
+            }
+        }
         return view('paste', ['paste' => $paste]);
+    }
+    public function getPasteRedirect($code)
+    {
+        $code = Urlcode::where('code', $code)->first();
+        $paste = $code->copypasta;
+        return view('pasteredirect', ['paste' => $paste]);
     }
 }

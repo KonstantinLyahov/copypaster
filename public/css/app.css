@@ -1,0 +1,4 @@
+tbody> tr.pastelist-tr:hover {
+	background-color: gray;
+	cursor: pointer;
+}

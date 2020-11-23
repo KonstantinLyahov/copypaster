@@ -35,6 +35,11 @@
                         <li class="nav-item">
                             <a href="{{ route('create') }}" class="nav-link">Create</a>
                         </li>
+                        @auth
+                        <li class="nav-item">
+                            <a href="{{ route('user.pastes') }}" class="nav-link">My pastes</a>
+                        </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->

@@ -20,6 +20,8 @@ Auth::routes(['verify' => true]);
 Route::get('/', [CopypastaController::class, 'getIndexPage'])->name('index');
 Route::get('/home',  [CopypastaController::class, 'getHomePage'])->middleware(['auth', 'verified'])->name('home');
 Route::get('/create', [CopypastaController::class, 'getCreatePage'])->name('create');
-Route::get('/paste/{code}', [CopypastaController::class, 'getPaste'])->name('get.paste');
+Route::get('/mypastes', [CopypastaController::class, 'getUserPastes'])->middleware(['auth', 'verified'])->name('user.pastes');
+Route::get('/paste/{code}', [CopypastaController::class, 'getPasteRedirect'])->name('get.paste');
 
+Route::post('/paste/{code}', [CopypastaController::class, 'getPaste'])->name('post.paste');
 Route::post('/create', [CopypastaController::class, 'postCreate'])->name('post.create');
