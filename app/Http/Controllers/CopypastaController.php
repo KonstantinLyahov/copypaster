@@ -56,6 +56,9 @@ class CopypastaController extends Controller
     public function getPaste($code, Request $request)
     {
         $code = Urlcode::where('code', $code)->first();
+        if(!$code) {
+            abort(404);
+        }
         $paste = $code->copypasta;
         if ($paste->exposure == 'private' && $paste->user != Auth::user()) {
             if (!$request->password || $request->password == '') {
@@ -70,7 +73,44 @@ class CopypastaController extends Controller
     public function getPasteRedirect($code)
     {
         $code = Urlcode::where('code', $code)->first();
+        if(!$code) {
+            abort(404);
+        }
         $paste = $code->copypasta;
         return view('pasteredirect', ['paste' => $paste]);
+    }
+    public function getPasteChange($code)
+    {
+        $code = Urlcode::where('code', $code)->first();
+        if(!$code) {
+            abort(404);
+        }
+        $paste = $code->copypasta;
+        if ($paste->user != Auth::user()) {
+            return redirect()->back();
+        }
+        return view('changepaste', ['paste' => $paste]);
+    }
+    public function postPasteChange(Request $request)
+    {
+        $code = Urlcode::where('code', $request->code)->first();
+        if(!$code) {
+            abort(404);
+        }
+        $paste = $code->copypasta;
+        if($paste->user!=Auth::user()){
+            abort(403);
+        }
+        $paste->title = $request->title;
+        $paste->body=$request->body;
+        $paste->exposure = $request->exposure;
+        if($paste->exposure != 'private'){
+            $paste->password = null;
+        }
+        if($request->changePassword && $paste->exposure=='private' && $request->password){
+            $paste->password = Hash::make($request->password);
+        }
+        $paste->save();
+        return view('changepaste', ['paste' => $paste, 'success_message' => true]);
     }
 }
