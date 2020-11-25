@@ -59,7 +59,10 @@ class CopypastaController extends Controller
         if(!$code) {
             abort(404);
         }
-        $paste = $code->copypasta;
+        $paste = Copypasta::withTrashed()->find($code->copypasta_id);
+        if(!$paste) {
+             abort(404);
+        }
         if ($paste->exposure == 'private' && $paste->user != Auth::user()) {
             if (!$request->password || $request->password == '') {
                 return view('pastepassword', ['code' => $code->code]);
@@ -76,7 +79,10 @@ class CopypastaController extends Controller
         if(!$code) {
             abort(404);
         }
-        $paste = $code->copypasta;
+        $paste = Copypasta::withTrashed()->find($code->copypasta_id);
+        if(!$paste) {
+            abort(404);
+        }
         return view('pasteredirect', ['paste' => $paste]);
     }
     public function getPasteChange($code)
@@ -86,6 +92,9 @@ class CopypastaController extends Controller
             abort(404);
         }
         $paste = $code->copypasta;
+        if(!$paste) {
+            abort(404);
+        }
         if ($paste->user != Auth::user()) {
             return redirect()->back();
         }
@@ -98,6 +107,9 @@ class CopypastaController extends Controller
             abort(404);
         }
         $paste = $code->copypasta;
+        if(!$paste) {
+            abort(404);
+        }
         if($paste->user!=Auth::user()){
             abort(403);
         }
@@ -112,5 +124,52 @@ class CopypastaController extends Controller
         }
         $paste->save();
         return view('changepaste', ['paste' => $paste, 'success_message' => true]);
+    }
+    public function deletePaste($code)
+    {
+        $code = Urlcode::where('code', $code)->first();
+        if(!$code) {
+            abort(404);
+        }
+        $paste = $code->copypasta;
+        if(!$paste) {
+            abort(404);
+        }
+        if($paste->user!=Auth::user()){
+            abort(403);
+        }
+        $paste->delete();
+        return view('message', ['message' => 'Successfully deleted']);  
+    }
+    public function getTrash()
+    {
+        $pastes = Copypasta::onlyTrashed()->get();
+        return view('index', ['pastes' => $pastes]);
+    }
+    public function forceDelete($code)
+    {
+        $code = Urlcode::where('code', $code)->first();
+        if(!$code) {
+            abort(404);
+        }
+        $paste = Copypasta::withTrashed()->find($code->copypasta_id);
+        if(!$paste) {
+            abort(404);
+        }
+        $paste->forceDelete();
+        return view('message', ['message' => 'Successfully deleted']);  
+    }
+    public function restore($code)
+    {
+        $code = Urlcode::where('code', $code)->first();
+        if(!$code) {
+            abort(404);
+        }
+        $paste = Copypasta::withTrashed()->find($code->copypasta_id);
+        if(!$paste) {
+            abort(404);
+        }
+        $paste->restore();
+        return view('message', ['message' => 'Successfully restored']);
     }
 }
