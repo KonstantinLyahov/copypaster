@@ -17,7 +17,6 @@ class CopypastaController extends Controller
     }
     public function getIndexPage()
     {
-        App::setLocale('ru');
         $pastes = Copypasta::where('exposure', 'public')->orderBy('created_at')->get();
         return view('index', ['pastes' => $pastes]);
     }

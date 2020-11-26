@@ -37,11 +37,11 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a href="{{ route('create') }}" class="nav-link">Create</a>
+                            <a href="{{ route('create') }}" class="nav-link">{{ __('paste.create') }}</a>
                         </li>
                         @auth
                         <li class="nav-item">
-                            <a href="{{ route('user.pastes') }}" class="nav-link">My pastes</a>
+                            <a href="{{ route('user.pastes') }}" class="nav-link">{{ __('paste.my_pastes') }}</a>
                         </li>
                         @endauth
                     </ul>
@@ -63,8 +63,27 @@
                         @endif
                         @else
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('trash') }}">Trash</a>
+                            <a class="nav-link" href="{{ route('trash') }}">{{ __('paste.trash') }}</a>
                         </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('auth.logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                        @endguest
                         <li class="nav-item dropdown">
                             <a id="localeNavbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -79,24 +98,6 @@
                                 </a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                        @endguest
                     </ul>
                 </div>
             </div>
