@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CopypastaController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::get('/deletepaste/{code}', [CopypastaController::class, 'deletePaste'])->
 Route::get('/trash', [CopypastaController::class, 'getTrash'])->middleware(['auth', 'verified'])->name('trash');
 Route::get('/forcedelete/{code}', [CopypastaController::class, 'forceDelete'])->middleware(['auth', 'verified'])->name('force-delete');
 Route::get('/restore/{code}', [CopypastaController::class, 'restore'])->middleware(['auth', 'verified'])->name('restore');
+Route::get('/locale/{locale}', [LanguageController::class, 'setLocale'])->name('locale');
 
 Route::post('/paste/{code}', [CopypastaController::class, 'getPaste'])->name('post.paste');
 Route::post('/changepaste/{code}', [CopypastaController::class, 'postPasteChange'])->middleware(['auth', 'verified'])->name('post.paste.change');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Copypasta;
 use App\Models\Urlcode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,7 +22,8 @@ class CopypastaController extends Controller
     }
     public function getHomePage()
     {
-        return view('home');
+        $pastes = Copypasta::where('exposure', 'public')->orderBy('created_at')->get();
+        return view('index',  ['pastes' => $pastes]);
     }
     public function getUserPastes()
     {
@@ -61,7 +63,7 @@ class CopypastaController extends Controller
         }
         $paste = Copypasta::withTrashed()->find($code->copypasta_id);
         if(!$paste) {
-             abort(404);
+            abort(404);
         }
         if ($paste->exposure == 'private' && $paste->user != Auth::user()) {
             if (!$request->password || $request->password == '') {
