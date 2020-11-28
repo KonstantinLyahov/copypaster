@@ -28,6 +28,23 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a id="localeNavbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ session('locale')=='ru'?'Русский':'English' }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="localeNavbarDropdown">
+                            <a class="dropdown-item" href="{{ route('locale', ['locale' => 'en']) }}">
+                                English 
+                            </a>
+                            <a class="dropdown-item" href="{{ route('locale', ['locale' => 'ru']) }}">
+                                Русский
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </nav>
         <main class="py-4">
             @yield('content')

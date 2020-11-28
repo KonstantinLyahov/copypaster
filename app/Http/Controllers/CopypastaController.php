@@ -22,7 +22,8 @@ class CopypastaController extends Controller
     }
     public function getHomePage()
     {
-        return view('home');
+        $pastes = Copypasta::where('exposure', 'public')->orderBy('created_at')->get();
+        return view('index',  ['pastes' => $pastes]);
     }
     public function getUserPastes()
     {
