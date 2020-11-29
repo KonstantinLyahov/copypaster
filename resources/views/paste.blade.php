@@ -22,7 +22,7 @@
 			<button
 				onclick="confirmRedirect(`{{ route('force-delete', ['code' => $paste->urlcode->code]) }}`, '{{ __('paste.sure') }}')"
 				class="btn btn-danger">{{ __('paste.delete_fully') }}</button>
-			@elseif ($paste->user == Auth::user() && Auth::user())
+			@elseif ($paste->user == Auth::user())
 			<a href="{{ route('paste.change', ['code' => $paste->urlcode->code]) }}" class="btn btn-light">{{ __('paste.change') }}</a>
 			<button
 				onclick="confirmRedirect(`{{ route('paste.delete', ['code' => $paste->urlcode->code]) }}`, '{{ __('paste.sure') }}')"
