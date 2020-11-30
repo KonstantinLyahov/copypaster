@@ -36,7 +36,7 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAILGUN_DOMAIN', env('MAIL_HOST', 'smtp.mailgun.org')),
+            'host' => env('MAILGUN_SMTP_SERVER', env('MAIL_HOST', 'smtp.mailgun.org')),
             'port' => env('MAILGUN_SMTP_PORT', env('MAIL_PORT', 587)),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAILGUN_SMTP_LOGIN', env('MAIL_USERNAME')),
